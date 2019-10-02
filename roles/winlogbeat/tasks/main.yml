@@ -1,0 +1,52 @@
+---
+- name: check if a service is installed
+  win_service:
+    name: winlogbeat
+  register: service_info
+- name: debug service info
+  debug:
+    msg: "{{ service_info }}"
+- name: stop existing winlogbeat service
+  win_service:
+    name: "{{ winlogbeat_service_name }}"
+    state: stopped
+  when: service_info['exists'] == "true"
+     
+
+- name: remove existing winlogbeat files
+  win_file:
+    path: "{{ winlogbeat_base_dir }}"
+    state: absent
+
+#- name: copy installation file zip
+#  win_copy:
+#    # src: "winlogbeat-6.5.4-windows.zip" # change to variables
+#    src: "{{ winlogbeat_file_name }}"
+#    dest: "C:\\Program Files\\winlogbeat-6.5.4-windows.zip" # chnage to var
+
+- name: unzip the copied file
+  win_unzip:
+    src: "{{ winlogbeat_root_dir }}\\{{ winlogbeat_file_name }}"
+    # dest: "{{ winlogbeat_root_dir }}\\"
+    dest: "C:\\Program Files"
+
+#- name: print vars
+#  debug:
+#    msg: "var is {{ winlogbeat_base_dir }}"
+# - name: unzip the copied file
+#   win_unzip:
+#     src: program files path
+#     dest: program files
+# 
+# - name: ensure winlogbeat is running
+#   win_service:
+#     name: winlogbeat
+#     start_mode: auto
+#     state: started
+# 
+# - name: copy config file
+#   win_template:
+#     src: "winlogbeat.yml.j2"
+#     dest: "{{ winlogbeat_base_dir }}"
+#     newline_sequence: '\n'
+#   notify: restart winlogbeat

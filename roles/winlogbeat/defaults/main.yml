@@ -1,0 +1,6 @@
+---
+winlogbeat_service_name: 'winlogbeat'
+winlogbeat_file_name: 'winlogbeat-6.5.4-windows.zip'
+winlogbeat_root_dir: "C:\\Program Files"
+winlogbeat_base_dir: '{{ winlogbeat_root_dir }}\winlogbeat'
+winlogbeat_logs_dir: '{{ winlogbeat_base_dir }}\Logs'
