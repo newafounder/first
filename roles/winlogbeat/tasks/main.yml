@@ -8,15 +8,15 @@
     msg: "{{ service_info }}"
 - name: stop existing winlogbeat service
   win_service:
-    name: "{{ winlogbeat_service_name }}"
+    name: "{{ winlogbeat_servicename }}"
     state: stopped
-  when: service_info['exists'] == "true"
+  when: service_info['exists'] == true
      
 
-- name: remove existing winlogbeat files
-  win_file:
-    path: "{{ winlogbeat_base_dir }}"
-    state: absent
+# - name: remove existing winlogbeat files
+#   win_file:
+#     path: "{{ winlogbeat_base_dir }}"
+#     state: absent
 
 #- name: copy installation file zip
 #  win_copy:
@@ -27,9 +27,42 @@
 - name: unzip the copied file
   win_unzip:
     src: "{{ winlogbeat_root_dir }}\\{{ winlogbeat_file_name }}"
-    # dest: "{{ winlogbeat_root_dir }}\\"
-    dest: "C:\\Program Files"
+    dest: "{{ winlogbeat_root_dir }}\\"
+    # dest: "{{ winlogbeat_base_dir }}"
 
+# - name: remove the zip file
+# #   win_file:
+# #     path: "{{ winlogbeat_root_dir }}\\{{ winlogbeat_file_name }}"
+# #     state: absent
+#
+# - name: move install files
+#   win_file:
+#    
+
+- name: install winlogbeat service
+  win_shell: ./install-service-winlogbeat.ps1 
+  args:
+    chdir: "{{ winlogbeat_base_dir }}"
+  register: ls_out
+#  win_command: "{{ winlogbeat_base_dir }}"/install-service-winlogbeat.ps1 Start-Service -Name "{{ winlogbeat_servicename }}"
+#  args:
+#    chdir: "{{ winlogbeat_base_dir }}"
+
+- name: start winlogbeat service
+  win_shell: Start-Service -Name "{{winlogbeat_servicename}}"
+  register: ser_out
+
+- name: create logs dir
+  win_file:
+    path: "{{ winlogbeat_logs_dir }}"
+    state: directory
+
+#- name: set winlogbeat service automatic
+  
+
+- name: debug ls out
+  debug:
+    msg: "{{ ser_out }}"
 #- name: print vars
 #  debug:
 #    msg: "var is {{ winlogbeat_base_dir }}"
