@@ -1,0 +1,19 @@
+---
+
+- name: remove the zip file
+  win_file:
+    path: "{{ winlogbeat_root_dir }}{{ winlogbeat_file_name }}{{ winlogbeat_file_ext }}"
+    state: absent
+
+- name: remove winlogbeat extracted dir
+  win_file:
+    path: "{{ winlogbeat_root_dir }}{{ winlogbeat_file_name }}\\"
+    state: absent
+
+- name: start winlogbeat
+  win_shell: Start-Service -Name "{{winlogbeat_servicename}}"
+
+- name: restart winlogbeat
+  win_service:
+    name: "{{ winlogbeat_servicename }}"
+    state: restarted
