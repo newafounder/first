@@ -10,10 +10,16 @@
     state: absent
   when: service_info['exists'] == true
 
+- name: check if winlogbeat directory exists
+  win_stat:
+    path: "{{ winlogbeat_base_dir }}"
+  register: base_dir
+
 - name: remove existing winlogbeat files
   win_file:
     path: "{{ winlogbeat_base_dir }}"
     state: absent
+  when: base_dir.stat.exists == true
 
 - name: get winlogbeat installation file
   win_get_url:
