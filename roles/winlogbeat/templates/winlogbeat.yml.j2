@@ -1,85 +1,131 @@
----
+###############################################################################
+############################# Winlogbeat ######################################
 
-# Events
+#======================= Winlogbeat specific options ==========================
+
 winlogbeat.event_logs:
-  {{ winlogbeat_event_logs | to_json }}
+  - name: Application
+    ignore_older: 72h
+    tags: ["server"]
+  - name: System
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Security
+    event_id: -5156, -5158, -4656, -4658, -4663, -4690, -4703
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TaskScheduler/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-PowerShell/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-CAPI2/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-CodeIntegrity/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-DNS-Client/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-DNS Client Events/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-Windows Remote Management/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-DriverFrameworks-UserMode/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-ReadyBoost/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-ReadyBoostDriver/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-DeviceSetupManager/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-Bits-Client/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-WLAN-AutoConfig/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-GroupPolicy/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-WMI-Activity/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-WLAN-AutoConfig/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-SMBClient/Connectivity
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-SMBClient/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-SMBClient/Security
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-SMBServer/Connectivity
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-SMBServer/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-SMBServer/Security
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-LocalSessionManager/Admin
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-ClientUSBDevices/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-ClientUSBDevices/Admin
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-ServerUSBDevices/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-ServerUSBDevices/Admin
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-TerminalServices-RDPClient/Operational
+    ignore_older: 72h
+    tags: ["server"]
+  - name: Microsoft-Windows-Sysmon/Operational
+    ignore_older: 72h
+    tags: ["server"]
 
-# Fields and tags
+winlogbeat.registry_file: {{ winlogbeat_registry_file }}
 
-{% if winlogbeat_tags  %}
-tags: {{ winlogbeat_tags | to_json }}
-{% endif %}
+#----------------------------- Logstash output --------------------------------
 
-{% if winlogbeat_fields  %}
-fields: {{ winlogbeat_fields | to_json }}
-{% endif %}
+output.logstash.hosts: {{ winlogbeat_output_logstash_hosts | to_json }}
+output.logstash.loadbalance: true
+output.logstash.index: winlogbeat
 
-{% if winlogbeat_fields_under_root  %}
-fields_under_root: {{ winlogbeat_fields_under_root }}
-{% endif %}
+#================================ Logging =====================================
 
-
-#Output
-output:
-{% if winlogbeat_output_elasticsearch_hosts  %}
-  elasticsearch:
-    hosts: {{ winlogbeat_output_elasticsearch_hosts | to_json }}
-{% if winlogbeat_ssl_enabled %}
-    # If any 'ssl' parameters are included, defaults to 'true', otherwise defaults to 'false'.  
-    # Can force true or false independent of ssl section settings
-    ssl.enabled: {{ winlogbeat_ssl_enabled }}
-{% endif %}
-{% if winlogbeat_ssl_certificate_authorities %}
-    ssl.certificate_authorities: {{ winlogbeat_ssl_certificate_authorities }}
-{% endif %}
-{% if winlogbeat_ssl_verification_mode %}
-    ssl.verification_mode: {{ winlogbeat_ssl_verification_mode }}
-{% endif %}
-{% if winlogbeat_ssl_cipher_suites %}
-    ssl.cipher_suites: {{ winlogbeat_ssl_cipher_suites }}
-{% endif %}
-{% if winlogbeat_ssl_curve_types %}
-    # Configure curve types for ECDHE based cipher suites
-    ssl.curve_types: {{ winlogbeat_ssl_curve_types }}
-{% endif %}
-{% if winlogbeat_ssl_supported_protocols %}
-    ssl.supported_protocols: {{ winlogbeat_ssl_supported_protocols }}
-{% endif %}
-{% endif %}
-
-{% if winlogbeat_output_logstash_hosts %}
-  logstash:
-    hosts: {{ winlogbeat_output_logstash_hosts | to_json }}
-{% if winlogbeat_ssl_enabled %}
-    # If any 'ssl' parameters are included, defaults to 'true', otherwise defaults to 'false'.
-    # Can force true or false independent of ssl section settings
-    ssl.enabled: {{ winlogbeat_ssl_enabled }}
-{% endif %}
-{% if winlogbeat_ssl_certificate_authorities %}
-    ssl.certificate_authorities: {{ winlogbeat_ssl_certificate_authorities | to_json }}
-{% endif %}
-{% if winlogbeat_ssl_verification_mode %}
-    ssl.verification_mode: {{ winlogbeat_ssl_verification_mode }}
-{% endif %}
-{% if winlogbeat_ssl_cipher_suites %}
-    ssl.cipher_suites: {{ winlogbeat_ssl_cipher_suites | to_json }}
-{% endif %}
-{% if winlogbeat_ssl_curve_types %}
-    # Configure curve types for ECDHE based cipher suites
-    ssl.curve_types: {{ winlogbeat_ssl_curve_types | to_json }}
-{% endif %}
-{% if winlogbeat_ssl_supported_protocols %}
-    ssl.supported_protocols: {{ winlogbeat_ssl_supported_protocols | to_json}}
-{% endif %}
-{% endif %}
-
-{% if winlogbeat_enable_logging %}
-logging:
-  level: {{ winlogbeat_log_level }}
-  to_files: true
-  to_syslog: false
-  files:
-    path: {{ winlogbeat_log_dir }}
-    name: {{ winlogbeat_log_filename }}
-    keepfiles: 7
-{% endif %}
+logging.level: "{{ winlogbeat_log_level }}"
+logging.to_files: true
+logging.to_syslog: false
+logging.metrics.enabled: true
+logging.metrics.period: 5m
+logging.files.path: {{ winlogbeat_logs_dir }}
+logging.files.rotateeverybytes: 10485760
+logging.files.keepfiles: 7

@@ -1,11 +1,20 @@
 ---
-
 winlogbeat_file_name: 'winlogbeat-6.5.4-windows-x86_64'
 winlogbeat_file_ext: '.zip'
-#winlogbeat_arch: 'x86_64'
 winlogbeat_zip_url: 'https://artifacts.elastic.co/downloads/beats/winlogbeat/{{ winlogbeat_file_name }}{{ winlogbeat_file_ext }}'
 winlogbeat_sha_url: 'https://artifacts.elastic.co/downloads/beats/winlogbeat/{{ winlogbeat_file_name }}{{ winlogbeat_file_ext }}.sha512'
 winlogbeat_servicename: 'winlogbeat'
 winlogbeat_root_dir: "C:\\Program Files\\"
 winlogbeat_base_dir: "{{ winlogbeat_root_dir }}winlogbeat\\"
+
+winlogbeat_enable_logging: true
 winlogbeat_logs_dir: "{{ winlogbeat_base_dir }}Logs\\"
+winlogbeat_logstash_host1_hostname: 'logstash1'
+winlogbeat_logstash_host1_port: '5144'
+winlogbeat_log_level: "info"
+
+winlogbeat_registry_file: "{{ winlogbeat_base_dir }}\\.winlogbeat.yml"
+
+winlogbeat_output_logstash_hosts:
+  - "logstash1:5144"
+

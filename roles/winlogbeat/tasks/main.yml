@@ -43,7 +43,9 @@
   win_shell: ./install-service-winlogbeat.ps1 
   args:
     chdir: "{{ winlogbeat_base_dir }}"
-  notify: start winlogbeat
+
+- name: start winlogbeat
+  win_shell: Start-Service -Name "{{winlogbeat_servicename}}"
 
 - name: create logs dir
   win_file:
@@ -54,3 +56,9 @@
   win_shell: Set-Service -Name {{ winlogbeat_servicename }} -StartupType Automatic
   register: startup_info
 
+- name: copy winlogbeat configuration
+  win_template:
+    src: winlogbeat.yml.j2
+    dest: "{{ winlogbeat_base_dir }}\\winlogbeat.yml"
+  notify: restart winlogbeat
+  
