@@ -18,3 +18,39 @@ winlogbeat_registry_file: "{{ winlogbeat_base_dir }}\\.winlogbeat.yml"
 winlogbeat_output_logstash_hosts:
   - "logstash1:5144"
 
+winlogbeat_event_logs:
+  - Application
+  - Security
+  - System
+  - Microsoft-Windows-TaskScheduler/Operational
+  - Microsoft-Windows-PowerShell/Operational
+  - Microsoft-Windows-CAPI2/Operational
+  - Microsoft-Windows-CodeIntegrity/Operational
+  - Microsoft-Windows-DNS-Client/Operational
+  - Microsoft-Windows-DNS Client Events/Operational
+  - Microsoft-Windows-Windows Remote Management/Operational
+  - Microsoft-Windows-DriverFrameworks-UserMode/Operational
+  - Microsoft-Windows-ReadyBoost/Operational
+  - Microsoft-Windows-ReadyBoostDriver/Operational
+  - Microsoft-Windows-DeviceSetupManager/Operational
+  - Microsoft-Windows-Bits-Client/Operational
+  - Microsoft-Windows-WLAN-AutoConfig/Operational
+  - Microsoft-Windows-GroupPolicy/Operational
+  - Microsoft-Windows-WMI-Activity/Operational
+  - Microsoft-Windows-WLAN-AutoConfig/Operational
+  - Microsoft-Windows-SMBClient/Connectivity
+  - Microsoft-Windows-SMBClient/Operational
+  - Microsoft-Windows-SMBClient/Security
+  - Microsoft-Windows-SMBServer/Connectivity
+  - Microsoft-Windows-SMBServer/Operational
+  - Microsoft-Windows-SMBServer/Security
+  - Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
+  - Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin
+  - Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+  - Microsoft-Windows-TerminalServices-LocalSessionManager/Admin
+  - Microsoft-Windows-TerminalServices-ClientUSBDevices/Operational
+  - Microsoft-Windows-TerminalServices-ClientUSBDevices/Admin
+  - Microsoft-Windows-TerminalServices-ServerUSBDevices/Operational
+  - Microsoft-Windows-TerminalServices-ServerUSBDevices/Admin
+  - Microsoft-Windows-TerminalServices-RDPClient/Operational
+  - Microsoft-Windows-Sysmon/Operational

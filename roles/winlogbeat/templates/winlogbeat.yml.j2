@@ -2,114 +2,14 @@
 ############################# Winlogbeat ######################################
 
 #======================= Winlogbeat specific options ==========================
-
+{% if winlogbeat_event_logs %}
 winlogbeat.event_logs:
-  - name: Application
+ {% for event in winlogbeat_event_logs %}
+ - name: {{ event }}
     ignore_older: 72h
     tags: ["server"]
-  - name: System
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Security
-    event_id: -5156, -5158, -4656, -4658, -4663, -4690, -4703
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TaskScheduler/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-PowerShell/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-CAPI2/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-CodeIntegrity/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-DNS-Client/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-DNS Client Events/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-Windows Remote Management/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-DriverFrameworks-UserMode/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-ReadyBoost/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-ReadyBoostDriver/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-DeviceSetupManager/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-Bits-Client/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-WLAN-AutoConfig/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-GroupPolicy/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-WMI-Activity/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-WLAN-AutoConfig/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-SMBClient/Connectivity
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-SMBClient/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-SMBClient/Security
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-SMBServer/Connectivity
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-SMBServer/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-SMBServer/Security
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Admin
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-LocalSessionManager/Admin
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-ClientUSBDevices/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-ClientUSBDevices/Admin
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-ServerUSBDevices/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-ServerUSBDevices/Admin
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-TerminalServices-RDPClient/Operational
-    ignore_older: 72h
-    tags: ["server"]
-  - name: Microsoft-Windows-Sysmon/Operational
-    ignore_older: 72h
-    tags: ["server"]
+ {% endfor %}
+{% endif %}
 
 winlogbeat.registry_file: {{ winlogbeat_registry_file }}
 

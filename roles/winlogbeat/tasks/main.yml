@@ -1,5 +1,5 @@
 ---
-- name: check if a service is installed
+- name: check if winlogbeat service is installed
   win_service:
     name: winlogbeat
   register: service_info
@@ -26,7 +26,7 @@
     url: "{{ winlogbeat_zip_url }}"
     dest: "{{ winlogbeat_root_dir }}"
 
-- name: unzip the copied file
+- name: unzip the installation file
   win_unzip:
     src: "{{ winlogbeat_root_dir }}{{ winlogbeat_file_name }}{{ winlogbeat_file_ext }}"
     dest: "{{ winlogbeat_root_dir }}"
@@ -44,9 +44,6 @@
   args:
     chdir: "{{ winlogbeat_base_dir }}"
 
-- name: start winlogbeat
-  win_shell: Start-Service -Name "{{winlogbeat_servicename}}"
-
 - name: create logs dir
   win_file:
     path: "{{ winlogbeat_logs_dir }}"
@@ -61,4 +58,4 @@
     src: winlogbeat.yml.j2
     dest: "{{ winlogbeat_base_dir }}\\winlogbeat.yml"
   notify: restart winlogbeat
-  
+
